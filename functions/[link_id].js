@@ -14,8 +14,12 @@ export async function onRequestGet(context) {
             }
             return await baseResponse(301, undefined, headers)
         }
-        return await baseResponse(404, "not found")
+        return await baseResponse(404, { message: "not found" })
     } catch (error) {
-        return await context.next()
+        console.log(error.message);
+        return baseResponse(500, {
+            message: err.message,
+            trace: err.stack
+        })
     }
 }
