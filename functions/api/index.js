@@ -1,4 +1,4 @@
-import { baseResponse } from "utils"
+import { baseResponse } from "../utils"
 
 export function onRequestGet(context) {
   try {
