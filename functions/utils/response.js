@@ -1,6 +1,5 @@
 const baseResponse = async (
   statusCode,
-  message,
   payload = undefined,
   headers = {}
 ) => {
@@ -10,12 +9,8 @@ const baseResponse = async (
   if (headers) {
     Object.assign(responseHeaders, headers);
   }
-  const body = {
-    message: message,
-    data: payload,
-  };
-  const json = JSON.stringify(body);
-  return new Response(json, {
+  const body = JSON.stringify(payload);
+  return new Response(body, {
     status: statusCode,
     headers: responseHeaders,
   });
