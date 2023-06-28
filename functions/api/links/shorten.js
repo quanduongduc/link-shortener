@@ -5,8 +5,6 @@ export async function onRequestPost(context) {
         const { request, env } = context
         const { url } = await request.json()
         const id = generateUniqueId()
-        console.log(id);
-        console.log(url);
         const { success } = await env.DB.prepare("INSERT INTO links (id, original_url) VALUES (?, ?)"
         ).bind(id, url).run()
 

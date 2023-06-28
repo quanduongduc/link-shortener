@@ -4,12 +4,10 @@ export async function onRequestGet(context) {
     try {
         const { request, env } = context
         const link_id = context.params.link_id;
-        const { results } = env.DB.prepare(`
-            SELECT TOP 1 links.id FROM links WHERE links.id = ?;
-        `).bind(link_id)
-        if (results) {
+        const { results } = await env.DB.prepare("SELECT * FROM links WHERE links.id = ? LIMIT 1").bind(link_id).all()
+        if (results[0]) {
             const headers = {
-                location: results.original_url
+                location: results[0].original_url
             }
             return await baseResponse(301, undefined, headers)
         }

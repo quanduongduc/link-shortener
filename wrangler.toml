@@ -2,3 +2,4 @@
 binding = "DB"
 database_name = "link-shortener"
 database_id = "036fa1d4-ae3c-44a2-ac71-ef2ed88d9baa"
+preview_database_id = "local-test-db"
