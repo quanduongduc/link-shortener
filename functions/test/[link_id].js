@@ -1,13 +1,13 @@
-import { baseResponse } from "./utils"
+import { baseResponse } from "../utils"
 
 export async function onRequestGet(context) {
     try {
         const { request, env } = context
         const { link_id } = context.params
-        const redirect_url = await env.UrlById.get(link_id)
-        // const result = await env.DB.prepare(`
-        //     SELECT * FROM links WHERE links.id = ?;
-        // `).bind(link_id).first()
+        const result = await env.DB.prepare(`
+            SELECT * FROM links WHERE links.id = ?;
+        `).bind(link_id).first()
+        const redirect_url = result.original_url
         if (redirect_url) {
             const headers = {
                 location: redirect_url

@@ -22,7 +22,6 @@ const Home = () => {
                 url: url
             }),
         },).then(res => {
-            console.log(res);
             if (!res.ok) {
                 throw new Error(res.statusText);
             }
@@ -58,7 +57,9 @@ const Home = () => {
                 <button type="submit">Submit</button>
             </form>
             <div className="display-container">
-                <strong>Display:</strong> {shortenUrl}
+                <i>
+                    {shortenUrl}
+                </i>
             </div>
             {modal.show && (
                 <Modal onClose={handleCloseModal}>

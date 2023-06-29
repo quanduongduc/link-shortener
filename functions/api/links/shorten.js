@@ -1,9 +1,11 @@
-import { baseResponse, generateUniqueId, isValidAlias, isValidUrl } from "../../utils"
+import { FIXED_ID_LENGTH, alphabet, baseResponse, isValidAlias, isValidUrl } from "../../utils"
+import { customAlphabet } from "nanoid"
 
 export async function onRequestPost(context) {
     try {
         const { request, env } = context
         const { url, alias } = await request.json()
+
         if (!isValidUrl(url)) {
             return baseResponse(403, {
                 message: "invalid url, pls try again"
@@ -15,9 +17,8 @@ export async function onRequestPost(context) {
                 message: "invalid alias, pls try again"
             })
         }
-        console.log(url, alias);
-
-        let id = generateUniqueId()
+        const nano = customAlphabet(alphabet, FIXED_ID_LENGTH)
+        let id = nano()
         if (alias) {
             id = alias
         }
@@ -25,6 +26,9 @@ export async function onRequestPost(context) {
         ).bind(id, url).run()
 
         if (success) {
+            // need to store id -> original_url in KV here
+            const kv = env.UrlById
+            await kv.put(id, url)
             const payload = {
                 message: "your link is ready to use",
                 data: {
@@ -40,8 +44,8 @@ export async function onRequestPost(context) {
     } catch (error) {
         console.log(error.message);
         return baseResponse(500, {
-            error: err.message,
-            trace: err.stack
+            error: error.message,
+            trace: error.stack
         })
     }
 }

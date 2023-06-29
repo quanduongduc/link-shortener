@@ -8,6 +8,10 @@ export function isValidUrl(url) {
 }
 
 export function isValidAlias(alias) {
-    const regex = /^[A-Za-z0-9]{4,}$/;
-    return regex.test(alias);
+    try {
+        const regex = /^[A-Za-z0-9]{4,}$/;
+        return regex.test(alias);
+    } catch (error) {
+        return false
+    }
 }
